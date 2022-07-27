@@ -1,0 +1,49 @@
+/*
+
+User profile database stores information about users and their work profiles.
+
+Each user has one and only one work profile.
+
+Each user has stored first and last names, email and birthday which are mandatory. Email is a unique value.
+A profile for each user is optional, and consists of optional information: city, job_position, company and education.
+All these fields are regular strings without restrictions.
+
+  TECH NOTES AND NAMING CONVENTION
+- All tables, columns and constraints are named using "snake case" naming convention
+- All table names must be plural (e.g. "companies", not "company")
+- All tables (except link tables) should have a single-value identifier of type BIGINT, which is a primary key
+- All primary key, foreign key, and unique constraint should be named according to the naming convention.
+- All "1 - optional 1" relations should be handled using the same primary key value for both tables. E.g. child table
+should have a column that stores primary key from a parent table, which is a foreign key and primary key at the same time
+
+- All primary keys should be named according to the following rule "table_name_PK"
+- All foreign keys should be named according to the following rule "table_name_reference_table_name_FK"
+- All alternative keys (unique) should be named according to the following rule "table_name_column_name_AK"
+
+*/
+
+-- TODO: implement the SQL according to the description
+
+CREATE TABLE users (
+    first_name NVARCHAR(255) NOT NULL,
+    last_name NVARCHAR(255) NOT NULL,
+    email NVARCHAR(255) NOT NULL,
+    birthday DATE NOT NULL,
+    id BIGINT NOT NULL,
+    constraint users_PK PRIMARY KEY (id),
+    constraint users_email_AK UNIQUE  (email)
+);
+
+
+CREATE TABLE profiles (
+    user_id BIGINT UNIQUE,
+    city NVARCHAR(255),
+    job_position NVARCHAR(255),
+    company NVARCHAR(255),
+    education NVARCHAR(255),
+    constraint profiles_PK primary key (user_id),
+    constraint profiles_users_FK FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+
